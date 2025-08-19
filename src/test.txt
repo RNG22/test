@@ -1,0 +1,4 @@
+npm install --save-dev jest
+npm install cypress --save-dev
+
+npx cypress open
