@@ -1,7 +1,7 @@
 
 import './App.css';
 import Counter from './counter/Counter.jsx';
-import  Sum from './exercises/sum.js';
+// import  Sum from './exercises/sum.js';
 import FilterSearch from './filterSearch/FilterSearch.jsx';
 import List from './list/List.jsx';
 import Login from './login/Login.jsx';

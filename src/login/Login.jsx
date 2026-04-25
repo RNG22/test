@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { login } from '../js/api';
 
-const Login = ({  }) => {
+const Login = () => {
   // console.log('Login component rendered',onLoginSuccess);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
