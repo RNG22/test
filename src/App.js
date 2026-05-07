@@ -11,13 +11,14 @@ import TodoList from './todoList/TodoList.jsx';
 function App() {
   return (
     <div className="App">
+      Welcome!!
   {/* <Sum/> */}
-  <Counter/>
+  {/* <Counter/>
   <TextToggle/>
   <List/>
   <TodoList/>
   <FilterSearch/>
-  <Login/>
+  <Login/> */}
     </div>
   );
 }
