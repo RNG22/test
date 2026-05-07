@@ -1,0 +1,30 @@
+1)/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+will take 2-3 minutes
+
+2)echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+3)eval "$(/opt/homebrew/bin/brew shellenv)"
+4)brew --version
+
+Sample commands:
+Install the latest LTS version: brew install jenkins-lts
+Start the Jenkins service: brew services start jenkins-lts
+
+didnt run below 2 commands
+Restart the Jenkins service: brew services restart jenkins-lts
+Update the Jenkins version: brew upgrade jenkins-lts
+
+
+open localhost 8080
+
+cat /Users/rutujagaikwad/.jenkins/secrets/initialAdminPassword
+link is from 8080 port
+get password -31312cae12614c0da0b80d4a4fe55ff6
+and login in ui 8080 port
+
+install suggested plugins
+Create First Admin User
+username-RutujaG
+passward-@1234
+full name;Rutuja Gaikwad
+rutujag44@gmail.com
