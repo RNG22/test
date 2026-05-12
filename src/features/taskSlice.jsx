@@ -9,7 +9,7 @@ const initialState={
 
 // FETCH TASKS
 export const fetchTodo=createAsyncThunk('tasks/fetchTodo',async ()=>{
-const response=await fetch('https://jsonplaceholder.typicode.com/todos?_limit=5');
+const response=await fetch('http://localhost:8000/todos');
 const data=await response.json();
 return data.map((task)=>({
     id:task.id,
@@ -24,7 +24,7 @@ export const addTask = createAsyncThunk(
   "tasks/addTask",
   async (task) => {
     const response = await fetch(
-      "https://jsonplaceholder.typicode.com/todos",
+      "http://localhost:8000/todos",
       {
         method: "POST",
         headers: {
@@ -48,7 +48,7 @@ export const updateTask = createAsyncThunk(
   "tasks/updateTask",
   async (task) => {
     const response = await fetch(
-      `https://jsonplaceholder.typicode.com/todos/${task.id}`,
+      `http://localhost:8000/todos/${task.id}`,
       {
         method: "PUT",
         headers: {
@@ -72,7 +72,7 @@ export const deleteTask = createAsyncThunk(
   "tasks/deleteTask",
   async (id) => {
     await fetch(
-      `https://jsonplaceholder.typicode.com/todos/${id}`,
+      `http://localhost:8000/todos/${id}`,
       {
         method: "DELETE",
       }
