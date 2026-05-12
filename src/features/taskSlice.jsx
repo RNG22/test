@@ -11,11 +11,13 @@ const initialState={
 export const fetchTodo=createAsyncThunk('tasks/fetchTodo',async ()=>{
 const response=await fetch('http://16.171.44.236:8000/todos');
 const data=await response.json();
+console.log("data");
 return data.map((task)=>({
     id:task.id,
     title:task.title,
     description:'',
-    completed:task.completed ? 'completed' : 'To do'
+    "completed": false
+    // completed:task.completed ? 'completed' : 'To do'
 }));
 })
 
