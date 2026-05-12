@@ -1,0 +1,133 @@
+//(1).redux
+in redux
+1.types,actions & reducers created 
+2.immer need to add
+3.cretestore used to createstore
+
+//(2).in redux toolkit-slice(it creates types,action & reducers)
+2.behind the scene rtk uses immerjs
+3.in rtk configurestore is used
+
+1.npm i @reduxjs/toolkit
+const findItemIndex=>(state,action)=>const existingItemIndex=state.findItemIndex((cartItem)=>
+cartItem.productId===action.payload.productId)
+const slice=createSlice=({
+name:'cart',
+initialState:[],
+reducers:{
+    addItem(state,action){
+        const existingItemIndex=findItemIndex(state,action)
+       if(existingItemIndex !==-1){
+        state[existingItemIndex].quantity+=1
+       }else{
+        state.push({..action.payload,quantity:1})
+       }
+    }
+}
+})
+export const {
+    addCartItem,removeCartItem,increaseCartItemQantity,decreaseCartItemQuantity}=slice.actions
+
+    export default slice.reducer
+
+//(3).middleware
+action->reducers
+
+in case of api call
+reducers are pure functions(if same i/p sent you will get same o/p)
+
+middleware is a function which works between dispactch(action) and reducer
+action->middleware->dispactch
+middlware is curried function
+function Logger(store){
+    return function (next){
+        return function (action){
+            console.log(store,next,action)
+            next(action)
+        }
+    }
+}
+middlware by default stops action from going to store for reducer
+for sending forward we need to add next(action)
+
+arrow curried function
+const logger=(store)=>(next)=>(action)=>{
+    console.log(store,next,action)
+            next(action)
+}
+
+//(4).ways to fetch data in redux
+1.in useeffect fetch(not recommended)
+2.custom api middlware
+3.already default middleware- Thunk
+4.RTK query
+5.redux saga(not recommended)-not used much
+
+//(5)selectors in redux
+useselector()//for getting variable with data
+createselector()//for creating memoized selector
+
+//(6)custom api middleware
+//(7)Redux Thunk
+thunk gives functionality to dispatch function
+thunk meaning-a piece of code that does some delayed work
+
+createasyncThunk function for api calls
+1.createasyncthunk call api in try catch block
+2.in extrareducers(builder)=>{
+    builder
+    .addCase(fetchdata.pending){
+
+    }.addCase(fetchdata.fulfilled){
+
+    }.addCase(fetchdata.rejected){
+
+    }
+}
+
+//(8)RTK query
+it is powerful fetching and catching tool.(like axios,fetch) it is not statemanagement tool
+it also provides loadinf state,error state
+no need to install anything just need to install rtk & react-redux
+rtk query provides createApi
+
+import {createApi} from "@reduxjs/toolit/query/react"
+createApi function takes options names object which has baseQuey,endpoints
+createApi({
+baseQuery:fetchBaseQuery({baseUrl : "localhost/30000"}),
+tagTypes:['tasks]
+endpoints:(builder)=>({
+getTasks:builder.query({
+    query:()=>"/tasks",
+    transformResponse:(tasks)=>tasks.reverse(), //provided by rtkquery
+    provideTags:["tasks"],
+}),
+addTasks:builder.mutation({
+    query:(task)=>({
+        url:"/tasks",
+        method:"POST",
+        body:task,
+    }),
+    InvalidTags:["Tasks"],
+    async onQueryStarted()
+}),
+}),
+});
+
+in main file wrap app around <Provider store={Store}></Provider>
+
+In Store
+reducer:{
+    [api.reducerPath]:api.reducer,
+},
+middleware:(getDefaultMiddleware)=>[
+    ...getDefaultMiddleware(),
+    api.middleware,
+]
+//if there is list on home page and we go to contatc page if we have slow internet and go back to home page 
+generally list will rerender in redux, rtk and normal axios as it is added in useeffect which causes rerender 
+//but using rtk quey , it creates hook and behind the scene do catching so when he goes from home to contact us and back to home 
+list will not rload, even with low internet
+//in endpoints for fetch we do builder.query
+//for other create,update ,delete we do builder.mutation
+//when InvalidTags runs provideTags will be fired

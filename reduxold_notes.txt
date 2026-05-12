@@ -1,0 +1,83 @@
+// redux
+// redux is predictable state container for js apps
+//1.configureStore
+//2.createSlice
+//3.createAsyncThunk
+//4.RTK Query
+
+//Difference between redux & redux toolkit
+//1.redux toolkit provides configureStore() which simplifies store setup by automatically combining reducers, adding middleware,
+// and enabling dev tools.
+//2.createSlice() in redux toolkit simplifies reducer logic by allowing you to write "mutating" code that is safely 
+//handled under the hood, while in redux you need to write immutable update logic.
+//3.createAsyncThunk() in redux toolkit simplifies handling of async actions by automatically generating action 
+//types and action creators for pending, fulfilled, and rejected states, while in redux you need to manually create these action 
+//types and handle them in reducers.
+//4.RTK Query is a powerful data fetching and caching tool built on top of redux toolkit that simplifies API interactions, while
+// in redux you would need to set up your own data fetching logic and caching mechanisms.
+
+//product management system
+//list,filter,delete products
+//npm install @reduxjs/toolkit react-redux
+//create a new folder
+//inside that create store.js file
+import { configureStore } from '@reduxjs/toolkit';
+import ProductReducer from '../features/products/productSlice';
+const store = configureStore({
+    reducer:{
+products:ProductReducer,
+[productApi.reducerPath]: productApi.reducer,
+    },
+middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(productApi.middleware),
+
+});
+export default store;
+
+//in main.jsx
+import {Provider} from 'react-redux';
+import { Store } from './redux';
+
+function App() {    
+    return (
+        <Provider store={Store}>
+            <div className="App">
+                <h1>Redux Toolkit Example</h1>
+            </div>
+        </Provider>
+    );
+}
+
+export default App;
+
+//create new folder features/products/productSlice.js
+import { createSlice } from '@reduxjs/toolkit';
+
+const initialState={};
+
+const productSlice=createSlice({
+    name:"products",
+    initialState,
+    reducers:{
+
+    }
+});
+export default productSlice.reducer;
+
+//FETCHING APIS
+//Rtk query is a powerful data fetching and caching tool built on top of redux toolkit that simplifies API interactions
+//inside features/ create api/productApi.js
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+export const productApi = createApi({
+    reducerPath: 'productApi',
+    baseQuery: fetchBaseQuery({ baseUrl: 'https://api.example.com/' }),
+    tagTypes: ['Products'],
+    endpoints: (builder) => ({
+        getProducts: builder.query({
+            query: () => 'products',
+        }),
+    }),
+});
+
+export const { useGetProductsQuery } = productApi;
