@@ -9,14 +9,13 @@ const initialState={
 
 // FETCH TASKS
 export const fetchTodo=createAsyncThunk('tasks/fetchTodo',async ()=>{
-const response=await fetch('http://16.171.44.236:8000/todos');
+const response=await fetch('http://localhost:8000/todos');
 const data=await response.json();
-console.log("data");
 return data.map((task)=>({
     id:task.id,
     title:task.title,
-    description:'',
-    "completed": false
+    description:task.description,
+    completed:task.completed,
     // completed:task.completed ? 'completed' : 'To do'
 }));
 })
@@ -26,7 +25,7 @@ export const addTask = createAsyncThunk(
   "tasks/addTask",
   async (task) => {
     const response = await fetch(
-      "http://16.171.44.236:8000/todos",
+      "http://localhost:8000/todos",
       {
         method: "POST",
         headers: {
@@ -50,7 +49,7 @@ export const updateTask = createAsyncThunk(
   "tasks/updateTask",
   async (task) => {
     const response = await fetch(
-      `http://16.171.44.236:8000/todos/${task.id}`,
+      `http://localhost:8000/todos/${task.id}`,
       {
         method: "PUT",
         headers: {
@@ -74,7 +73,7 @@ export const deleteTask = createAsyncThunk(
   "tasks/deleteTask",
   async (id) => {
     await fetch(
-      `http://16.171.44.236:8000/todos/${id}`,
+      `http://localhost:8000/todos/${id}`,
       {
         method: "DELETE",
       }

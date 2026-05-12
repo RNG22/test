@@ -26,7 +26,8 @@ useEffect(()=>{
         <ul className='space-y-4'>{tasks.map((task)=>(
             <li className='bg-gray-50 p-4 rounded-md shadow-sm flex justify-between' key={task.id}>
                 <div
-                ><p>{task.title}</p>
+                ><p className='font-bold '>{task.title}</p>
+                {console.log(task)}
                 {task.description && <p>{task.description}</p>}
                 <p>Status: {task.completed}</p>
                 </div>
