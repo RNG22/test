@@ -1,22 +1,34 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 
-import { deleteTask } from '../features/taskSlice';
+import {
+    useDeleteTaskMutation,
+} from '../services/TaskApi';
 
-export const DeleteTask = ({ id }) => {
+export const DeleteTask = ({ taskId }) => {
 
-    const dispatch = useDispatch();
+    const [deleteTask] =
+        useDeleteTaskMutation();
 
-    const handleDelete = () => {
-        dispatch(deleteTask(id));
+    const handleDelete = async () => {
+
+        try {
+
+            await deleteTask(taskId);
+
+        } catch (error) {
+
+            console.log(error);
+        }
     };
 
     return (
+        <div>
         <button
             onClick={handleDelete}
             className='bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md'
         >
             Delete
         </button>
+        </div>
     );
 };

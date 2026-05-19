@@ -1,25 +1,28 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 
-import { updateTask } from '../features/taskSlice';
+import {
+    useUpdateTaskMutation,
+} from '../services/TaskApi';
 
 export const EditTask = ({ task }) => {
 
-    const [isEditing, setIsEditing] = useState(false);
+    const [isEditing, setIsEditing] =
+        useState(false);
 
-    const [title, setTitle] = useState(task.title);
+    const [title, setTitle] =
+        useState(task.title);
 
-    const [description, setDescription] = useState(
-        task.description
-    );
+    const [description, setDescription] =
+        useState(task.description);
 
-    const [status, setStatus] = useState(
-        task.completed
-    );
+    const [status, setStatus] =
+        useState(task.completed);
 
-    const dispatch = useDispatch();
+    const [updateTask] =
+        useUpdateTaskMutation();
 
-    const handleUpdate = (e) => {
+    const handleUpdate = async (e) => {
+
         e.preventDefault();
 
         const updatedTask = {
@@ -29,9 +32,16 @@ export const EditTask = ({ task }) => {
             completed: status,
         };
 
-        dispatch(updateTask(updatedTask));
+        try {
 
-        setIsEditing(false);
+            await updateTask(updatedTask);
+
+            setIsEditing(false);
+
+        } catch (error) {
+
+            console.log(error);
+        }
     };
 
     return (
@@ -52,6 +62,7 @@ export const EditTask = ({ task }) => {
 
                         {/* TITLE */}
                         <div>
+
                             <label className='block mb-1 font-medium'>
                                 Title
                             </label>
@@ -62,14 +73,18 @@ export const EditTask = ({ task }) => {
                                 placeholder='Enter task title'
                                 value={title}
                                 onChange={(e) =>
-                                    setTitle(e.target.value)
+                                    setTitle(
+                                        e.target.value
+                                    )
                                 }
                                 required
                             />
+
                         </div>
 
                         {/* DESCRIPTION */}
                         <div>
+
                             <label className='block mb-1 font-medium'>
                                 Description
                             </label>
@@ -85,10 +100,12 @@ export const EditTask = ({ task }) => {
                                 }
                                 required
                             />
+
                         </div>
 
                         {/* STATUS */}
                         <div>
+
                             <label className='block mb-1 font-medium'>
                                 Status
                             </label>
@@ -97,9 +114,12 @@ export const EditTask = ({ task }) => {
                                 className='w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-400'
                                 value={status}
                                 onChange={(e) =>
-                                    setStatus(e.target.value)
+                                    setStatus(
+                                        e.target.value
+                                    )
                                 }
                             >
+
                                 <option value="To do">
                                     To Do
                                 </option>
@@ -111,7 +131,9 @@ export const EditTask = ({ task }) => {
                                 <option value="Completed">
                                     Completed
                                 </option>
+
                             </select>
+
                         </div>
 
                         {/* BUTTONS */}
@@ -144,7 +166,9 @@ export const EditTask = ({ task }) => {
 
                 <button
                     className='bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md'
-                    onClick={() => setIsEditing(true)}
+                    onClick={() =>
+                        setIsEditing(true)
+                    }
                 >
                     Edit
                 </button>

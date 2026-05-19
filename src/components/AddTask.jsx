@@ -1,115 +1,90 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+// AddTask.jsx
 
-import { addTask } from '../features/taskSlice';
+import React, { useState } from "react";
+
+import {
+    useAddTaskMutation,
+} from "../services/TaskApi";
 
 export const AddTask = () => {
 
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [status, setStatus] = useState('To do');
+    const [title, setTitle] = useState("");
 
-    const dispatch = useDispatch();
+    const [description, setDescription] =
+        useState("");
+
+    const [status, setStatus] =
+        useState("To do");
+
+    const [addTask] =
+        useAddTaskMutation();
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
 
-        const newTask = {
+        await addTask({
             title,
             description,
-            completed: status
-        };
+            completed: status,
+        });
 
-        dispatch(addTask(newTask));
-
-        setTitle('');
-        setDescription('');
-        setStatus('To do');
+        setTitle("");
+        setDescription("");
+        setStatus("To do");
     };
 
     return (
-        <div >
+        <form
+            onSubmit={handleSubmit}
+            className="space-y-4"
+        >
 
-            <form
-                className='space-y-4'
-                onSubmit={handleSubmit}
+            <input
+                type="text"
+                placeholder="Title"
+                className="border p-2 w-full"
+                value={title}
+                onChange={(e) =>
+                    setTitle(e.target.value)
+                }
+            />
+
+            <textarea
+                placeholder="Description"
+                className="border p-2 w-full"
+                value={description}
+                onChange={(e) =>
+                    setDescription(
+                        e.target.value
+                    )
+                }
+            />
+
+            <select
+                className="border p-2 w-full"
+                value={status}
+                onChange={(e) =>
+                    setStatus(e.target.value)
+                }
             >
+                <option value="To do">
+                    To Do
+                </option>
 
-                <h2 className='text-2xl font-bold text-center'>
-                    Add New Task
-                </h2>
+                <option value="In Progress">
+                    In Progress
+                </option>
 
-                {/* TITLE */}
-                <div>
-                    <label className='block mb-1 font-medium'>
-                        Title
-                    </label>
+                <option value="Completed">
+                    Completed
+                </option>
+            </select>
 
-                    <input
-                        type="text"
-                        className='w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-400'
-                        placeholder='Enter task title'
-                        value={title}
-                        onChange={(e) =>
-                            setTitle(e.target.value)
-                        }
-                        required
-                    />
-                </div>
+            <button className="bg-green-500 text-white px-4 py-2 rounded">
+                Add Task
+            </button>
 
-                {/* DESCRIPTION */}
-                <div>
-                    <label className='block mb-1 font-medium'>
-                        Description
-                    </label>
-
-                    <textarea
-                        className='w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-400'
-                        placeholder='Enter task description'
-                        value={description}
-                        onChange={(e) =>
-                            setDescription(e.target.value)
-                        }
-                        required
-                    />
-                </div>
-
-                {/* STATUS */}
-                <div>
-                    <label className='block mb-1 font-medium'>
-                        Status
-                    </label>
-
-                    <select
-                        className='w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-400'
-                        value={status}
-                        onChange={(e) =>
-                            setStatus(e.target.value)
-                        }
-                    >
-                        <option value="To do">
-                            To Do
-                        </option>
-
-                        <option value="In Progress">
-                            In Progress
-                        </option>
-
-                        <option value="Completed">
-                            Completed
-                        </option>
-                    </select>
-                </div>
-
-                {/* BUTTON */}
-                <button
-                    type='submit'
-                    className='w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition'
-                >
-                    Add Task
-                </button>
-
-            </form>
-        </div>
+        </form>
     );
 };

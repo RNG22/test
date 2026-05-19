@@ -1,45 +1,63 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchTodo } from "../features/taskSlice";
-import { EditTask } from './EditTask';
-import { DeleteTask } from './DeleteTask';
+// TaskList.jsx
+
+import React from "react";
+
+import {
+    useGetTasksQuery
+} from "../services/TaskApi";
+
+import { EditTask } from "./EditTask";
+import { DeleteTask } from "./DeleteTask";
 
 export const TaskList = () => {
-    const tasks=useSelector((state)=>state.tasks.tasks);
-    const loading=useSelector((state)=>state.tasks.loading);
-    const error=useSelector((state)=>state.tasks.error);
-    const dispatch=useDispatch();
-useEffect(()=>{
-    dispatch(fetchTodo());
-},[dispatch])
+    const {data: tasks = [],isLoading,isError,error} = useGetTasksQuery();
 
-    if(loading){
-        return <div>Tasks Loading...</div>
-    }
-    if(error){
-        return <div>Error: {error}</div>
+
+    if (isLoading) {
+        return <h1>Loading...</h1>;
     }
 
-  return (
-    <div>
-        <h2 className='text-2xl font-bold mb-4'>Task List</h2>
-        <ul className='space-y-4'>{tasks.map((task)=>(
-            <li className='bg-gray-50 p-4 rounded-md shadow-sm flex justify-between' key={task.id}>
+    return (
+        <div className="space-y-4">
+
+            {tasks.map((task) => (
+
                 <div
-                ><p className='font-bold '>{task.title}</p>
-                {console.log(task)}
-                {task.description && <p>{task.description}</p>}
-                <p>Status: {task.completed}</p>
-                </div>
-                <div className='flex gap-2 items-center'>
-                    <EditTask task={task} />
+                    key={task.id}
+                    className="border p-4 rounded flex justify-between"
+                >
 
-                    <DeleteTask id={task.id} />
-                    {/* <button className='bg-blue-500 text-white px-4 py-2 rounded mt-2'>Edit</button> */}
-                    {/* <button className='bg-red-500 text-white px-3 py-1 rounded-md mt-2'>Delete</button> */}
+                    <div>
+                        <h2 className="font-bold">
+                            {task.title}
+                        </h2>
+
+                        <p>
+                            {task.description}
+                        </p>
+
+                        <p>
+                            {task.completed}
+                        </p>
+                    </div>
+
+                    <div className="flex gap-2">
+
+                        <EditTask task={task} />
+<DeleteTask taskId={task.id} />
+                        {/* <button
+                            onClick={() =>
+                                deleteTask(task.id)
+                            }
+                            className="bg-red-500 text-white px-3 py-1 rounded"
+                        >
+                            Delete
+                        </button> */}
+
+                    </div>
+
                 </div>
-            </li>
-        ))}</ul>
-    </div>
-  )
-}
+            ))}
+        </div>
+    );
+};
